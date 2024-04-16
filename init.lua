@@ -127,6 +127,7 @@ function SetInterval(callback, interval, ...)
         return error(('Callback must be a function. Received %s'):format(cbType))
     end
 
+    ---@diagnostic disable-next-line: unbalanced-assignments
     local args, id = { ... }
 
     Citizen.CreateThreadNow(function(ref)

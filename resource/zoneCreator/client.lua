@@ -96,7 +96,9 @@ local function closeCreator(cancel)
             width = width,
             length = length,
         }
-	end
+	else
+        TriggerEvent('ox_lib:cancelZone')
+    end
 
 	creatorActive = false
 	controlsActive = false

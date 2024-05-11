@@ -14,7 +14,7 @@ function lib.showTextUI(text, options)
     if currentText == text then return end
 
     if not options then options = {} end
-
+    options.position = options.position or 'left-center'
     options.text = text
     currentText = text
 

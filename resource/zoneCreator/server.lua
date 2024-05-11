@@ -142,7 +142,13 @@ local parse = {
 }
 
 RegisterNetEvent('ox_lib:saveZone', function(data)
+	local source = source
     if not source or not IsPlayerAceAllowed(source, 'command') then return end
+
     local output = (LoadResourceFile(cache.resource, 'created_zones.lua') or '') .. parse[data.zoneType](data)
+
+	data.format = 'array'
+	TriggerClientEvent('ox_lib:saveZone', source, json.decode(parse[data.zoneType](data)))
+
     SaveResourceFile(cache.resource, 'created_zones.lua', output, -1)
 end)

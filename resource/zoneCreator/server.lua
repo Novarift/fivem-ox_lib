@@ -141,14 +141,43 @@ local parse = {
 	end,
 }
 
+local asTable = {
+	poly = function (data)
+		local points = {}
+
+		for i = 1, #data.points do
+			points[#points + 1] = vec3((data.points[i].x), (data.points[i].y), data.zCoord)
+		end
+
+		return {
+			points = points,
+			name = data.name,
+			thickness = data.height,
+		}
+	end,
+	box = function (data)
+		return {
+			name = data.name,
+			coords = vec4(data.xCoord, data.yCoord, data.zCoord, data.heading),
+			size = vec3(data.width, data.length, data.height),
+		}
+	end,
+	sphere = function (data)
+		return {
+			name = data.name,
+			coords = vec3(data.xCoord, data.yCoord, data.zCoord),
+			radius = data.height,
+		}
+	end,
+}
+
 RegisterNetEvent('ox_lib:saveZone', function(data)
 	local source = source
     if not source or not IsPlayerAceAllowed(source, 'command') then return end
 
     local output = (LoadResourceFile(cache.resource, 'created_zones.lua') or '') .. parse[data.zoneType](data)
 
-	data.format = 'array'
-	TriggerClientEvent('ox_lib:saveZone', source, json.decode(parse[data.zoneType](data)))
+	TriggerClientEvent('ox_lib:saveZone', source, asTable[data.zoneType](data))
 
     SaveResourceFile(cache.resource, 'created_zones.lua', output, -1)
 end)
